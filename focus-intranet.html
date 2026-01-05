@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Consulting Wiki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A1929;
+            --secondary: #1E3A5F;
+            --accent: #4A90E2;
+            --accent-bright: #60A5FA;
+            --text: #E5E7EB;
+            --text-muted: #9CA3AF;
+            --bg: #0F1419;
+            --bg-card: #1A2332;
+            --border: #2D3748;
+            --success: #10B981;
+            --warning: #F59E0B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Archivo', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(74, 144, 226, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 400px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Archivo', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        .sidebar h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .nav-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.625rem 0.75rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--accent-bright);
+            transform: translateX(4px);
+        }
+        
+        .nav-item.active {
+            background: rgba(74, 144, 226, 0.15);
+            color: var(--accent-bright);
+            font-weight: 600;
+        }
+        
+        /* Main content */
+        .main-content {
+            min-height: 100vh;
+        }
+        
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.6s ease-out both;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        
+        .section h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .section h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .section ul, .section ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .section li {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .section a {
+            color: var(--accent-bright);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .section a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .card {
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.15);
+        }
+        
+        .card h3 {
+            color: var(--accent-bright);
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+        
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Value cards */
+        .value-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            border: 1px solid var(--accent);
+            border-left: 4px solid var(--accent-bright);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        
+        .value-card h3 {
+            color: var(--accent-bright);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Code blocks */
+        code {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--primary);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.875em;
+            color: var(--accent-bright);
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(74, 144, 226, 0.2);
+            color: var(--accent-bright);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .badge.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: var(--primary);
+            color: var(--accent-bright);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: rgba(74, 144, 226, 0.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+            
+            .search-box {
+                width: 300px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .section h1 {
+                font-size: 1.75rem;
+            }
+        }
+        
+        .highlight-box {
+            background: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid var(--accent-bright);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box strong {
+            color: var(--accent-bright);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">Focus Consulting</div>
+            <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search the wiki...">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="nav-group">
+                <h3>Getting Started</h3>
+                <a href="#about" class="nav-item">About Focus</a>
+                <a href="#mission" class="nav-item">Mission & Values</a>
+                <a href="#onboarding" class="nav-item">Onboarding</a>
+            </div>
+            
+            <div class="nav-group">
+                <h3>How We Work</h3>
+                <a href="#expectations" class="nav-item">Expectations</a>
+                <a href="#communication" class="nav-item">Communication</a>
+                <a href="#delivery" class="nav-item">Delivery Approach</a>
+            </div>
+            
+            <div class="nav-group">
+                <h3>Policies</h3>
+                <a href="#availability" class="nav-item">Availability Policy</a>
+                <a href="#timekeeping" class="nav-item">Time Tracking</a>
+                <a href="#travel" class="nav-item">Travel Policy</a>
+                <a href="#code-of-conduct" class="nav-item">Code of Conduct</a>
+            </div>
+            
+            <div class="nav-group">
+                <h3>Benefits & Performance</h3>
+                <a href="#benefits" class="nav-item">W-2 Benefits</a>
+                <a href="#performance" class="nav-item">Performance & Bonuses</a>
+                <a href="#compensation" class="nav-item">Compensation</a>
+            </div>
+            
+            <div class="nav-group">
+                <h3>Technical</h3>
+                <a href="#materials" class="nav-item">Materials & Access</a>
+                <a href="#tools" class="nav-item">Tools & Setup</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section id="about" class="section">
+                <h1>Welcome to Focus Consulting</h1>
+                <p>This wiki combines Focus' handbook (policies, benefits) and internal knowledge base (processes, expectations, best practices). It's designed for all staff at Focus - both W2 employees and project contractors.</p>
+                
+                <div class="highlight-box">
+                    <strong>Important Policies:</strong> While we expect staff to adhere to all policies, the Availability Policy and VPN Policy are especially critical for our line of work and align with client expectations.
+                </div>
+
+                <h2>About Focus Consulting</h2>
+                <p><strong>Purpose:</strong> Help companies and governments build better software.</p>
+                <p><strong>Mission:</strong> Impactful projects with happy clients.</p>
+                <p><strong>Vision:</strong> The most sought after digital services small business partner.</p>
+                <p><strong>Niche:</strong> Social impact - benefits, health, equity, learning & development.</p>
+
+                <h3>What We Do</h3>
+                <p>Focus Consulting is a software contracting firm serving both government and private clients. We provide services in two ways:</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Sub-contracting</h3>
+                        <p>We're hired by a prime contractor to augment and support a contract they already have with a client. The prime has primary responsibility for communicating with the client and organizing work.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Direct Staff Augmentation</h3>
+                        <p>We serve private/commercial clients by placing our staff on their teams. We directly handle and manage the client relationship, while the client directs the work.</p>
+                    </div>
+                </div>
+
+                <h3>Why Clients Work With Us</h3>
+                <p>Our clients and prime contracting partners trust us because we:</p>
+                <ul>
+                    <li>Have deep expertise in industries and roles we work in</li>
+                    <li>Effectively place staff with a variety of backgrounds and skill sets</li>
+                    <li>Consistently deliver on commitments</li>
+                    <li>Build and maintain strong relationships</li>
+                </ul>
+
+                <h3>Leadership Team</h3>
+                <ul>
+                    <li><strong>Ant Addis (CEO)</strong> - Overall company direction and strategy</li>
+                    <li><strong>Michael Kalish (CTO)</strong> - Technical leadership and architecture</li>
+                    <li><strong>Phedra Arthur (Chief Delivery Officer)</strong> - Delivery excellence and project management</li>
+                    <li><strong>Lowell Wood (Head of Engineering)</strong> - Engineering practices and standards</li>
+                    <li><strong>Meg Greenberg (Business Operations Lead)</strong> - Operations and HR</li>
+                </ul>
+            </section>
+
+            <section id="mission" class="section">
+                <h1>Mission, Vision & Core Values</h1>
+                
+                <p>These core values are critical to our success as a business. They help us create our internal culture, consistently deliver, and create trust with our clients. They set the bar we expect all Focus staff to meet and serve as the basis for how we evaluate ourselves.</p>
+
+                <div class="value-card">
+                    <h3>Clarity and Transparency</h3>
+                    <p>Our jobs involve taking complicated topics and working to remove the ambiguity. Our clients rely on us to work and communicate honestly and efficiently.</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>Do the Right Thing</h3>
+                    <p>We always come prepared, researching and documenting before raising topics with our clients. We respect our client's time and communications by asking questions that get to the root of things.</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>Do What You Say</h3>
+                    <p>Our reputation with our clients is critical to our success as a business, and that reputation is built by consistently delivering on what we promise to do.</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>Exhibit a Growth Mindset</h3>
+                    <p>The industry is constantly evolving and in order to stay relevant we need to constantly grow our skill sets to serve current and future clients.</p>
+                </div>
+            </section>
+
+            <section id="onboarding" class="section">
+                <h1>Onboarding</h1>
+                
+                <p>If you're reading this, you're coming onboard for a new project with Focus Consulting! We're excited to have you and to start making meaningful contributions for our clients.</p>
+
+                <h2>Your Points of Contact</h2>
+                <p>At Focus Consulting, you'll have two main points of contact:</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Your People Manager</h3>
+                        <ul>
+                            <li>Billing questions and hours worked</li>
+                            <li>Access to Focus or project systems</li>
+                            <li>Computer setup issues</li>
+                            <li>Payroll system questions</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Your Team Lead</h3>
+                        <ul>
+                            <li>Project setup questions</li>
+                            <li>Project goals and application</li>
+                            <li>Team introductions</li>
+                            <li>Code and contribution guidance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Before You Start</h2>
+                <ul>
+                    <li>Confirm which project you'll be working on with your manager</li>
+                    <li>An onboarding buddy will be assigned to help you ramp up</li>
+                    <li>Ensure you have an OSX machine with at least 32GB of memory (Focus will provide if needed)</li>
+                    <li>Check for your @focusconsulting.io email address</li>
+                    <li>Accept your invitation to the Focus Consulting Slack</li>
+                </ul>
+
+                <h2>First Week Goals</h2>
+                <ul>
+                    <li>Meet your project team</li>
+                    <li>Learn how to log time for your specific project</li>
+                    <li>Complete project-specific onboarding and machine setup</li>
+                    <li>Setup regular 1-1 with your manager</li>
+                    <li>Discuss your three month plan with your manager</li>
+                </ul>
+
+                <h2>Three Month Plan</h2>
+                <p>Your manager will put together a three month plan tailored to your project. This plan creates clear expectations for your first few months at Focus with specific goals and objectives. The plan provides guide rails during your onboarding process, not rigid prescriptions.</p>
+            </section>
+
+            <section id="expectations" class="section">
+                <h1>Expectations</h1>
+                
+                <p>These expectations are drawn from Focus' core values and are aimed at growing and maintaining a sustainable business.</p>
+
+                <h2>What We Expect From You</h2>
+
+                <h3>Availability</h3>
+                <p>Our expectations around availability map directly to our value of <strong>"Do what you say"</strong>. Our clients engage us for full time work during regular business hours and our reputation is largely driven by meeting that engagement.</p>
+
+                <div class="highlight-box">
+                    <strong>Available means:</strong>
+                    <ul>
+                        <li>By your computer where you perform work</li>
+                        <li>Able to respond to Slack or email communications</li>
+                        <li>Able to attend to any urgent matters</li>
+                    </ul>
+                </div>
+
+                <h4>Notification Requirements</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Duration</th>
+                            <th>Notice Required</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2 hours or less</td>
+                            <td>Right before</td>
+                            <td>Notify team via Slack/Teams</td>
+                        </tr>
+                        <tr>
+                            <td>2-8 hours</td>
+                            <td>Day before</td>
+                            <td>Notify team + add to Focus Out of Office calendar</td>
+                        </tr>
+                        <tr>
+                            <td>1 day to 1 week</td>
+                            <td>Preceding week</td>
+                            <td>Notify team + add to calendars</td>
+                        </tr>
+                        <tr>
+                            <td>1 week or more</td>
+                            <td>1 month before</td>
+                            <td>Notify Focus manager for coverage planning</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Note:</strong> Regular business hours typically mean 8AM to 6PM EST, adjusted based on your location (e.g., 10:30 AM East Coast / 7:30 AM West Coast).</p>
+
+                <h3>Work Location</h3>
+                <p>All work must be completed in the continental United States. Working from other locations might result in losing access to client systems.</p>
+
+                <h3>Timekeeping</h3>
+                <p>Record your time on a <strong>daily basis</strong>. This is how both you and Focus get paid, and daily tracking is the most reliable way to avoid disruptions in pay.</p>
+
+                <h3>Status Updates</h3>
+                <p>Provide a brief status update and any blockers in Slack once a week. You'll get a reminder in your project's channel.</p>
+
+                <h2>What You Can Expect From Us</h2>
+
+                <h3>Client Check-ins</h3>
+                <ul>
+                    <li>Regular check-ins with project leads to confirm client satisfaction</li>
+                    <li>Immediate sharing of growth opportunities and positive feedback</li>
+                    <li>Regular check-ins with directors on how the Focus team is perceived</li>
+                </ul>
+
+                <h3>One-on-One Check-ins</h3>
+                <ul>
+                    <li>Regular check-ins every two to four weeks</li>
+                    <li>Discussion of how things are going with work and team</li>
+                    <li>Regular feedback on performance and improvement opportunities</li>
+                </ul>
+
+                <h3>Performance Reviews</h3>
+                <p>Every six months, we conduct performance check-ins with everyone. The goals are:</p>
+                <ul>
+                    <li>Evaluate ourselves against Focus' core values</li>
+                    <li>Review feedback from clients</li>
+                    <li>Align on satisfaction with current project and work</li>
+                    <li>Discuss growth opportunities</li>
+                </ul>
+            </section>
+
+            <section id="communication" class="section">
+                <h1>Communication Guidelines</h1>
+                
+                <p>As contractors, excellent communication practices are as much part of the job as individual contributions. Our clients often are not technical and rely on us to bring <strong>clarity and transparency</strong> to complicated concepts.</p>
+
+                <h2>Client Communication</h2>
+                
+                <h3>Key Principles</h3>
+                <ul>
+                    <li><strong>Proactively share status</strong> - Focus on providing clarity on work progress. Be transparent when work is blocked or taking longer than expected.</li>
+                    <li><strong>Close all loops</strong> - Good communication is more than giving information; it's following up, responding, and doing what you say.</li>
+                    <li><strong>Formal in public</strong> - Keep conversations formal in public channels with key stakeholders to avoid misperception.</li>
+                    <li><strong>Practice "take 5 and backtrack"</strong> - If conversations become contentious, suggest taking time to reassess before circling back.</li>
+                    <li><strong>Admit mistakes</strong> - We're all human. Admitting mistakes and committing to learn from them is part of doing the right thing.</li>
+                </ul>
+
+                <h3>Work Communications</h3>
+                <ul>
+                    <li>Provide frequent updates for all in-progress work</li>
+                    <li>Keep ticket statuses up to date</li>
+                    <li>Update tickets with comments on progress</li>
+                    <li>Resolve all comments on ongoing work before moving to something new</li>
+                </ul>
+
+                <h2>Partner Communication (e.g., Nava)</h2>
+                <ul>
+                    <li><strong>Be transparent about availability</strong> - Partners rely on our work and need to know our schedules</li>
+                    <li><strong>Escalate issues early</strong> - Raising issues early builds trust and enables partners to handle them proactively</li>
+                    <li><strong>Be respectful</strong> - Conform to the norms partners have established in their communication channels</li>
+                </ul>
+
+                <h2>Focus Staff Communication</h2>
+                <ul>
+                    <li><strong>Ask questions publicly</strong> - Bring questions to the whole team and document everything for shared knowledge</li>
+                    <li><strong>Practice radical candor</strong> - Share opinions directly and humbly within our team</li>
+                    <li><strong>Escalate early</strong> - Let your Focus manager know about problems quickly so they can help resolve them</li>
+                    <li><strong>Keep internal communication internal</strong> - Use Focus Slack or email for non-client-specific communication</li>
+                    <li><strong>Update availability</strong> - Keep your availability current in the Focus shared calendar</li>
+                </ul>
+
+                <h2>Communication Best Practices</h2>
+                <ul>
+                    <li>Favor questions over commands - Bring an open mind to all communication</li>
+                    <li>Acknowledge others - Recognize and compliment good work</li>
+                    <li>Separate work from identity - Critical feedback is not about your value as a person</li>
+                    <li>When unsure, loop in your leads</li>
+                </ul>
+            </section>
+
+            <section id="delivery" class="section">
+                <h1>Delivery Approach</h1>
+                
+                <p>Focus has a distinctive approach to delivery that emphasizes outcomes, knowledge transfer, and sustainable practices. Our delivery philosophy is built on proven pillars that guide how we work with clients.</p>
+
+                <h2>Delivery Pillars</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Measure First</h3>
+                        <p>We start by understanding current state and establishing metrics before proposing solutions.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Build Second</h3>
+                        <p>Solutions are informed by data and real user needs, not assumptions.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Prove Before Scale</h3>
+                        <p>We validate approaches with real data before scaling solutions.</p>
+                    </div>
+                </div>
+
+                <h2>Our Philosophy</h2>
+                <ul>
+                    <li><strong>Outcome-based delivery</strong> - We focus on results, not just hours worked</li>
+                    <li><strong>Knowledge transfer</strong> - We build client capacity, not dependency</li>
+                    <li><strong>Engineering-first approach</strong> - We solve problems through technology, not just adding people</li>
+                    <li><strong>Performance-based contracts</strong> - We're willing to be measured on outcomes</li>
+                    <li><strong>Senior-heavy teams</strong> - We invest in experienced practitioners who can deliver independently</li>
+                </ul>
+
+                <h2>Project Practices</h2>
+                <ul>
+                    <li>Two-week sprint cycles with regular releases</li>
+                    <li>Bi-weekly retrospectives for continuous improvement</li>
+                    <li>Outcome-oriented metrics over utilization tracking</li>
+                    <li>Clear definition of done for all work</li>
+                    <li>Regular stakeholder communication and demos</li>
+                </ul>
+            </section>
+
+            <section id="performance" class="section">
+                <h1>Performance & Expectations</h1>
+                
+                <div class="highlight-box">
+                    <strong>Important:</strong> Performance expectations are not suggestions. They are a condition of your employment/contract with Focus.
+                </div>
+
+                <h2>Core Expectations</h2>
+                <p>Staff are expected to:</p>
+                <ul>
+                    <li>Adhere to all policies and code of conduct</li>
+                    <li>Follow working norms and project-specific norms</li>
+                    <li>Contribute to our delivery approach</li>
+                    <li>Meet performance expectations for their role</li>
+                </ul>
+
+                <h2>Performance Management</h2>
+                
+                <h3>Active Support</h3>
+                <ul>
+                    <li>Onboarding driven by 2-3 month plan, with more time for earlier career people</li>
+                    <li>Active mentorship for earlier career staff</li>
+                    <li>Coaching at earliest signs of inconsistency (not one-offs, but patterns)</li>
+                    <li>Most people get one cycle of coaching to improve</li>
+                </ul>
+
+                <h3>Examples of Failure to Meet Expectations</h3>
+                <ul>
+                    <li>No visible progress on tasks over a sprint without asking for help</li>
+                    <li>Not providing meaningful status updates</li>
+                    <li>Missing multiple team meetings without notice</li>
+                    <li>Frequently late to meetings</li>
+                    <li>Not adhering to team norms after reminders (draft PRs, daily time tracking, etc.)</li>
+                    <li>Team unable to reach you without notification of unavailability</li>
+                </ul>
+
+                <h3>Productivity Impact</h3>
+                <p>Life happens. When your productivity is impacted:</p>
+                <ul>
+                    <li>Let your manager know when you anticipate or start to see impact, not after</li>
+                    <li>Share as much as you're comfortable with</li>
+                    <li>Use appropriate time off (sick time, vacation, paid family leave)</li>
+                    <li>Discuss if project transfer or vacation might help</li>
+                </ul>
+
+                <h2>Bonus Structure</h2>
+                <p>Focus' bonus structure rewards employees who contribute to company level outcomes. Meeting expectations alone does not result in a bonus but is required for eligibility.</p>
+
+                <h3>Company Level Outcomes</h3>
+                
+                <div class="value-card">
+                    <h3>Builds Our Brand</h3>
+                    <p><strong>Yes:</strong> Stakeholders know you by name and value your contributions</p>
+                    <p><strong>Strong Yes:</strong> Stakeholders trust and depend on your work, likely to recommend Focus</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>Wins New Business</h3>
+                    <p><strong>Yes:</strong> Contributed to BD effort with pwin ≥ 75%</p>
+                    <p><strong>Strong Yes:</strong> We won work where you contributed positively</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>Helps Us Scale</h3>
+                    <p><strong>Yes:</strong> Reduced management overhead through onboarding, mentoring, managing</p>
+                    <p><strong>Strong Yes:</strong> Introduced efficiency gains over current processes</p>
+                </div>
+
+                <h3>How Bonuses Work</h3>
+                <ul>
+                    <li><strong>Input:</strong> Bonuses reflect values exhibition and company outcome contributions</li>
+                    <li><strong>Amount:</strong> Percentage of base salary, up to yearly defined maximum (usually 10-15%)</li>
+                    <li><strong>Eligibility:</strong> W2 employees at Focus for at least 4 months as of 12/31</li>
+                    <li><strong>When:</strong> Bonuses paid out in January for the previous year</li>
+                    <li><strong>Pool:</strong> Decided yearly based on revenues and profit</li>
+                </ul>
+            </section>
+
+            <section id="materials" class="section">
+                <h1>Materials & Access</h1>
+                
+                <h2>Computers</h2>
+                <p>All projects require using an OSX machine. Focus will provide computers when the client doesn't, but contractors are welcome to use their own (unless the client provides one).</p>
+
+                <h3>Setting Up a New Focus Machine</h3>
+                <ol>
+                    <li>Install <a href="https://brew.sh/">Homebrew</a> (package manager for Mac)</li>
+                    <li>Run <code>xcode-select --install</code></li>
+                    <li>Install <a href="https://docs.docker.com/desktop/mac/install/">Docker for Mac</a></li>
+                    <li>Install <a href="https://www.google.com/chrome/downloads/">Google Chrome</a></li>
+                    <li>Configure <a href="https://go.jamfnow.com/g5rrmr">Jamf Now</a> for Focus using code: 551778</li>
+                </ol>
+
+                <h2>Recommended Tools</h2>
+                <p>These recommendations are tested for project setup. You can use alternatives, but instructions are only tested with these tools.</p>
+
+                <h3>Code Editor</h3>
+                <ul>
+                    <li><a href="https://code.visualstudio.com/">VSCode</a> with recommended extensions for our projects</li>
+                </ul>
+
+                <h3>Recommended Extensions</h3>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Essential</h3>
+                        <ul>
+                            <li>ESLint</li>
+                            <li>Prettier</li>
+                            <li>GitLens</li>
+                            <li>Docker</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Python</h3>
+                        <ul>
+                            <li>Python</li>
+                            <li>Pylance</li>
+                            <li>Mypy</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Utilities</h3>
+                        <ul>
+                            <li>SQLTools</li>
+                            <li>Excel Viewer</li>
+                            <li>Remote Containers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Other Tools</h3>
+                <ul>
+                    <li><strong>Skitch</strong> - Screenshot annotation</li>
+                    <li><strong>Flycut</strong> - Clipboard manager</li>
+                    <li><strong>TablePlus</strong> - Database management</li>
+                    <li><strong>Homebrew, asdf</strong> - Version management</li>
+                </ul>
+
+                <h2>Important Notes</h2>
+                
+                <div class="highlight-box">
+                    <strong>OS Updates:</strong> Do not apply OS upgrades until the all-clear has been given. OSX upgrades can cause issues with tools or machine operation. Wait for verification and specific steps.
+                </div>
+
+                <h3>Troubleshooting</h3>
+                <ul>
+                    <li>Focus has backup machines available if you're having issues preventing work</li>
+                    <li>M1 Macs may have more issues, but all projects have users on them - reach out in project channels</li>
+                    <li>For Docker issues, try increasing resources given to the Docker engine</li>
+                    <li>Verify you've followed all setup steps correctly</li>
+                </ul>
+
+                <h2>System Access</h2>
+                <p>Projects will grant access to their engineering systems and tools. This access is critical to our success with clients - treat it with respect. If unsure about correct system use, reach out to your manager.</p>
+
+                <h3>Production Systems</h3>
+                <p>For projects with production system access, properly managing this access is incredibly important to maintaining client relationships. Before doing anything in production, read that project's specific details on handling access and personally identifiable information.</p>
+            </section>
+
+            <section id="benefits" class="section">
+                <h1>Benefits (W-2 Employees)</h1>
+                
+                <p>Focus offers comprehensive benefits to W-2 employees. Specific benefit details are available in the W-2 Benefits folder and through Rippling.</p>
+
+                <h2>Health Insurance</h2>
+                <p>Focus provides health insurance options for W-2 employees. Details on plans, coverage, and enrollment are available through Rippling.</p>
+
+                <h2>Vacation & Time Off</h2>
+                <p>Taking time away from work for vacation is important and we encourage all staff to take time off.</p>
+                
+                <div class="highlight-box">
+                    <strong>For Contractors:</strong> Paid vacation is not available. All vacation time must be added to the Focus Out of Office calendar and announced to your team. See the Availability section for notification timelines.
+                </div>
+
+                <h2>Updating Your Address</h2>
+                
+                <h3>W-2 Employees</h3>
+                <ol>
+                    <li>Log into <a href="https://app.rippling.com/sign-in/id">Rippling</a></li>
+                    <li>Click My Profile → Personal Information → Edit your address</li>
+                    <li>Save</li>
+                </ol>
+                <p>If moving within same state, this is all you need. If moving to different state, Rippling will prompt for additional tax documentation.</p>
+
+                <h3>Contractors</h3>
+                <ol>
+                    <li>Log into <a href="https://app.rippling.com/sign-in/id">Rippling</a></li>
+                    <li>Update address as above</li>
+                    <li>If moving to different state, also update your W-9 in the Documents section</li>
+                </ol>
+            </section>
+
+            <section id="tools" class="section">
+                <h1>Tools & Resources</h1>
+                
+                <h2>Accessing Anthropic/Claude</h2>
+                <ol>
+                    <li>Download <a href="https://anythingllm.com/desktop">AnythingLLM</a></li>
+                    <li>Create an <a href="https://console.anthropic.com/settings/keys">API Key</a> in Anthropic console</li>
+                    <li>Start up AnythingLLM</li>
+                    <li>Follow setup instructions and input the API key</li>
+                    <li>Confirm it's working in Settings → LLM</li>
+                </ol>
+
+                <h2>Key Resources</h2>
+                <ul>
+                    <li><strong>Asana</strong> - Project management and hiring pipeline tracking</li>
+                    <li><strong>Slack</strong> - Team communications</li>
+                    <li><strong>Google Workspace</strong> - Collaboration and documents</li>
+                    <li><strong>Rippling</strong> - HR management and payroll</li>
+                    <li><strong>GitHub</strong> - Version control and code collaboration</li>
+                </ul>
+
+                <h2>Government-Specific Tools</h2>
+                <ul>
+                    <li><strong>Login.gov</strong> - Authentication integration for government projects</li>
+                    <li><strong>GrantSolutions.gov</strong> - Federal reporting workflows</li>
+                    <li><strong>SAM.gov</strong> - Federal procurement system</li>
+                    <li><strong>GSA eLibrary</strong> - Contract vehicle information</li>
+                </ul>
+            </section>
+
+            <section id="code-of-conduct" class="section">
+                <h1>Code of Conduct</h1>
+                
+                <p>Focus is committed to providing a welcoming, inclusive, and harassment-free environment for everyone. Our code of conduct applies to all Focus spaces, including work on client projects, company events, and online interactions.</p>
+
+                <h2>Expected Behavior</h2>
+                <ul>
+                    <li>Be respectful and considerate in all interactions</li>
+                    <li>Assume good intent from colleagues</li>
+                    <li>Practice active listening and open communication</li>
+                    <li>Welcome diverse perspectives and experiences</li>
+                    <li>Focus on what is best for the team and clients</li>
+                    <li>Show empathy towards others</li>
+                    <li>Provide and accept constructive feedback gracefully</li>
+                </ul>
+
+                <h2>Unacceptable Behavior</h2>
+                <ul>
+                    <li>Harassment, discrimination, or intimidation of any kind</li>
+                    <li>Offensive comments related to personal characteristics or identity</li>
+                    <li>Unwelcome sexual attention or inappropriate physical contact</li>
+                    <li>Deliberate intimidation, stalking, or following</li>
+                    <li>Sustained disruption of discussions or work</li>
+                    <li>Publication of private information without consent</li>
+                    <li>Other conduct which could reasonably be considered inappropriate</li>
+                </ul>
+
+                <h2>Reporting</h2>
+                <p>If you experience or witness unacceptable behavior, please report it to your manager or to Meg Greenberg (meg.greenberg@focusconsulting.io) as soon as possible. All reports will be handled with discretion and confidentiality.</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = item.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    // Remove active class from all items
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    // Add active class to clicked item
+                    item.classList.add('active');
+                    
+                    // Smooth scroll
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // Update active nav item on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href') === `#${id}`) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
